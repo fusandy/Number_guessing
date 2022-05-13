@@ -6,12 +6,6 @@ export const setName = (name) => {
     }
 }
 
-export const clearName = () => {
-    return {
-        type: "clearName"
-    }
-}
-
 // start button
 export const setNum = (number) => {
     return {

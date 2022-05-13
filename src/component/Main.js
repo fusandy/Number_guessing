@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { setName, 
-    clearName,
+import { setName,
     setNum, 
     clearNum, 
     setRecord, 
@@ -11,11 +10,14 @@ import { setName,
     clearRange,
     setList 
 } from '../actions'
+import List from './List'
 
 function Main(){
     const [ inputName, setInputName ] = useState('')
     const [ inputNumber, setInputNumber ] = useState('')
     const [ result, setResult ] = useState('')
+    const [ error, setError ] = useState('')
+    const [ showList, setShowList ] = useState(false)
     const dispatch = useDispatch()
 
     // get the name from the store
@@ -54,12 +56,25 @@ function Main(){
     
     // get name input value
     const inputNameHandler = (e) => {
+        setError('')
         const inputName = e.target.value
-        setInputName(inputName)
+        const nameList = list.map(({name})=>name)
+        if(nameList.includes(inputName)){
+            setError('姓名重複，請重新輸入。')
+        } else {
+            setInputName(inputName)
+        }
+        
     }
     // random a number and setAnswer
     const numberRunner = () => {
+        if (!inputName  || /^\s/.test(inputName)) {
+            setError('姓名不可空白。')
+            return
+        }
         const random = Math.ceil(Math.random()*50)
+        dispatch(clearRecord())
+        dispatch(clearRange())
         dispatch(setNum(random))
         dispatch(setName(inputName))
     }
@@ -73,6 +88,7 @@ function Main(){
     // submit the answer
     const submitHandler = (e) => {
         e.preventDefault()
+        if(!inputNumber) return
         dispatch(setRecord(inputNumber))
     }
 
@@ -84,6 +100,7 @@ function Main(){
         }
         if (lastAnswer !==0 && lastAnswer === answer) {
             dispatch(setList({ name:name, timer:times}))
+            dispatch(clearNum())
             setInputName('')
             setInputNumber('')
             return '恭喜 答對了！'
@@ -110,26 +127,28 @@ function Main(){
     }
     
     const replayHandler = () => {
-        dispatch(clearNum())
         dispatch(clearRecord())
         dispatch(clearRange())
-        dispatch(clearName())
     }
 
+    const showListHandler = () => {
+        showList ? setShowList(false) : setShowList(true)
+    }
     
     return (
         <>
             <div className="container">
-                <p>姓名錯誤提示...</p>
+                <h1>Number Guessing Game</h1>
                 <div className="section">
                     <input type="text" 
                         name="user" 
                         id="user"
                         value={inputName}
-                        placeholder="Enter Your Name"
+                        placeholder="Enter your name"
                         onChange={inputNameHandler}
                     />
                     <button onClick={numberRunner}>START</button>
+                    <p>{error}</p>
                 </div>
                 <div className="section">
                     <form onSubmit={submitHandler}>
@@ -150,29 +169,10 @@ function Main(){
                     <p>累積次數: {times} 次 </p>
                     <p>結果: {result} </p>
                     <button onClick={replayHandler}>再玩一次</button>
+                    <button onClick={showListHandler}>查看排名</button>
                 </div>
                 <div className="section">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>名次</th>
-                            <th>姓名</th>
-                            <th>累積次數</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    {list.sort((a,b)=>a.timer-b.timer)
-                        .map((v,i) => {
-                        return (
-                            <tr key={v.name.toString()}>
-                                <td>{i+1}</td>
-                                <td>{v.name}</td>
-                                <td>{v.timer}</td>
-                            </tr>
-                        )
-                    })}
-                    </tbody>
-                </table>
+                    <List list={list} showList={showList}/>
                 </div>
             </div>
         </>
