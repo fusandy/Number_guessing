@@ -1,17 +1,45 @@
-import { useMemo } from 'react'
+import { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { setNum, setRecord, changeMax, changeMin } from '../actions'
+import { setName, 
+    clearName,
+    setNum, 
+    clearNum, 
+    setRecord, 
+    clearRecord, 
+    changeMax, 
+    changeMin,
+    clearRange,
+    setList 
+} from '../actions'
 
 function Main(){
+    const [ inputName, setInputName ] = useState('')
+    const [ inputNumber, setInputNumber ] = useState('')
+    const [ result, setResult ] = useState('')
+    const dispatch = useDispatch()
+
+    // get the name from the store
+    // name = { name: '' }
+    const selectName = state => state.setName.name
+    const name = useSelector(selectName)
+
     // get the random answer from store
+    // answer = { value : 0 }
     const selectAnswer = state => state.setNum.value
-    const answer = useSelector(selectAnswer)
+    const answer = useSelector(selectAnswer)  
     
     // get the guessing array from store
+    // record = [ { value: 0 , timer: 0 }, {}, {} ... ]
     const selectRecord = state => state.setRecord
-    const record = useSelector(selectRecord)   // [{value: , timer: }, {}, {} ...]
-        
+    const record = useSelector(selectRecord)
+
+    // get the list
+    // list = [ {name:XXX, timer: 5}, {}, {} ...]
+    const selectList = state => state.setList
+    const list = useSelector(selectList)
+    
     // get the max and min from the range
+    // range = { max: 50 , min: 1 }
     const selectRange = state => state.setRange
     const range = useSelector(selectRange)
     let { max, min } = range
@@ -24,30 +52,40 @@ function Main(){
     const valueArr = record.map( ({value}) => value)
     const lastAnswer = valueArr[valueArr.length - 1]
     
-    const dispatch = useDispatch()
-
+    // get name input value
+    const inputNameHandler = (e) => {
+        const inputName = e.target.value
+        setInputName(inputName)
+    }
     // random a number and setAnswer
     const numberRunner = () => {
         const random = Math.ceil(Math.random()*50)
         dispatch(setNum(random))
+        dispatch(setName(inputName))
     }
     
+    // get number input value
+    const inputNumberHandler = (e) => {
+        const inputNumber = e.target.value
+        setInputNumber(inputNumber)
+    }
+
     // submit the answer
     const submitHandler = (e) => {
         e.preventDefault()
-        const inputValue = document.querySelector('[name=answer]').value
-        dispatch(setRecord(inputValue))
+        dispatch(setRecord(inputNumber))
     }
 
     // compare and show the result
-    // todo: max, min 用reducer紀錄，第一次猜的時候，dispatch改變max or min，第二次以後判斷答案是否有在更新的範圍內，然後根據answer決定要改變max or min
-    const resultHander = (lastAnswer, answer)=>{
+    const resultHandler = (lastAnswer, answer) => {
         // initial answer = 0, empty string for the result.
         if (lastAnswer === 0) {
             return ''
         }
-        // correct string for the result
-        if (lastAnswer === answer) {
+        if (lastAnswer !==0 && lastAnswer === answer) {
+            dispatch(setList({ name:name, timer:times}))
+            setInputName('')
+            setInputNumber('')
             return '恭喜 答對了！'
         } 
         // wrong answer + range hint for the result
@@ -60,38 +98,81 @@ function Main(){
             return `大一點，${min} ~ ${max}`
         }
     }
-    const result = useMemo(() => resultHander(lastAnswer, answer), [lastAnswer, answer])
+    useEffect(() => {
+        const result = resultHandler(lastAnswer, answer, min, max)
+        setResult(result)
+    }, [lastAnswer, min, max])
 
     // input value is not allowed Chinese character
     const editHandler = (e) => {
         const charCode = e.which
         return ! charCode > 126
     }
-
+    
+    const replayHandler = () => {
+        dispatch(clearNum())
+        dispatch(clearRecord())
+        dispatch(clearRange())
+        dispatch(clearName())
+    }
 
     
     return (
         <>
             <div className="container">
+                <p>姓名錯誤提示...</p>
                 <div className="section">
+                    <input type="text" 
+                        name="user" 
+                        id="user"
+                        value={inputName}
+                        placeholder="Enter Your Name"
+                        onChange={inputNameHandler}
+                    />
                     <button onClick={numberRunner}>START</button>
                 </div>
                 <div className="section">
-                    <form>
+                    <form onSubmit={submitHandler}>
                         <input
                             type="number"
                             name="answer"
+                            value={inputNumber}
                             placeholder="Enter a number between 1 ~ 50"
                             disabled={ answer == 0 && `${"enabled"}`}
                             autoComplete="off"
                             onKeyPress={editHandler}
+                            onChange={inputNumberHandler}
                         />
-                        <button onClick={submitHandler}>GUESS</button>
+                        <button type='submit'>GUESS</button>
                     </form>
                 </div>
                 <div className="section">
                     <p>累積次數: {times} 次 </p>
                     <p>結果: {result} </p>
+                    <button onClick={replayHandler}>再玩一次</button>
+                </div>
+                <div className="section">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>名次</th>
+                            <th>姓名</th>
+                            <th>累積次數</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {list.sort((a,b)=>a.timer-b.timer)
+                        .map((v,i) => {
+                        return (
+                            <tr key={v.name.toString()}>
+                                <td>{i+1}</td>
+                                <td>{v.name}</td>
+                                <td>{v.timer}</td>
+                            </tr>
+                        )
+                    })}
+                    </tbody>
+                </table>
                 </div>
             </div>
         </>

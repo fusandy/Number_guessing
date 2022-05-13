@@ -1,4 +1,4 @@
-const initialState = [{
+const initialRecord = [{
     value: 0,
     timer: 0,
 }]
@@ -10,9 +10,9 @@ function timeCalculator(guessNum){
     return parseInt(time) + 1;
 }
 
-export default function setGuessReducer(state=initialState, action){
+export default function setRecordReducer(state=initialRecord, action){
     switch (action.type){
-        case "guess":
+        case "setRecord/guess":
             return [
                 ...state,
                 {
@@ -20,6 +20,8 @@ export default function setGuessReducer(state=initialState, action){
                     timer:  timeCalculator(state)
                 }
             ]
+        case "setRecord/clear":
+            return initialRecord
         default:
             return state
     }
