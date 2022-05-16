@@ -11,6 +11,7 @@ body {
   align-items: center;
   background-color: black;
   color: white;
+  font-size: 1.2rem;
 }
 
 code {
@@ -62,12 +63,14 @@ button:active{
 }
 
 table{
-  
+  width: 100%;
 }
 
-thead{
+thead th{
   background-color: white;
+  border-radius: 5px;
   color: black;
+  padding: 2px;
 }
 
 tbody{
@@ -76,4 +79,12 @@ tbody{
 
 td{
   padding: 1rem 0;
+  position: relative;
+}
+
+td span{
+  position: absolute;
+  left: 60%;
+  top: 10%;
+  transform: rotate(25deg);
 }
