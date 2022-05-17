@@ -11,7 +11,6 @@ body {
   align-items: center;
   background-color: black;
   color: white;
-  font-size: 1.2rem;
 }
 
 code {
@@ -24,7 +23,7 @@ code {
 }
 
 .section{
-  padding-bottom: 1.5rem;
+  margin-bottom: .5rem;
 }
 
 input, button{
@@ -60,6 +59,10 @@ button{
 
 button:active{
   background-color: rgb(192, 169, 135);
+}
+
+button:disabled{
+  background-color: blanchedalmond;
 }
 
 table{

@@ -1,45 +1,52 @@
 import { useState } from 'react'
-import { useDispatch } from 'react-redux'
-import { setRecord } from '../actions'
+import { useDispatch, useSelector } from 'react-redux'
+import { setValueAndTimes } from '../actions'
 
 function GuessField(props){
-    const { inputNumber, setInputNumber, answer, min, max } = props
+    const { success, inputNumber, setInputNumber } = props
+
     const [ error, setError ] = useState('')
     const dispatch = useDispatch()
+    
+    // get the random answer from store
+    const answer = useSelector(state => state.answer) 
+
+    // get the max and min from store
+    const max = useSelector(state => state.max)
+    const min = useSelector(state => state.min)
+
+    // get times from store
+    let times = useSelector(state => state.times)
 
     // get number input value
     const inputNumberHandler = (e) => {
         setError('')
-        const inputNumber = parseInt(e.target.value)
+        const inputNumber = (parseInt(e.target.value))
         setInputNumber(inputNumber)
     }
 
-    // invalid message set into error field
+    // invalid message
     const invalidHandler = (e) => {
         e.preventDefault();
-        if(inputNumber < 1 || inputNumber > 50){
-            setError('請輸入1~50之間的數字')
+        if(inputNumber < 1){
+            setError('輸入的數字不可小於1')
         }
-
+        if(inputNumber > 50){
+            setError('輸入的數字不可大於50')
+        }
     }
     
-    // submit the answer
+    // submit answer
     const submitHandler = (e) => {
         e.preventDefault()
         if(!inputNumber) return
         if( inputNumber > min && inputNumber < max ) {
-            dispatch(setRecord(inputNumber))
+            times ++;
+            dispatch(setValueAndTimes(inputNumber, times))
         }else{
-            setError('請輸入符合區間範圍的數字')
+            setError(`請輸入${min}~${max}範圍的數字`)
         }
-        
     }
-
-    // input value is not allowed Chinese character
-    // const editHandler = (e) => {
-    //     const charCode = e.which
-    //     return ! charCode > 126
-    // }
 
     return (
         <>
@@ -49,16 +56,15 @@ function GuessField(props){
                         type="number"
                         name="answer"
                         value={inputNumber}
-                        placeholder="Enter a number between 1 ~ 50"
-                        disabled={ answer == 0 && `${"enabled"}`}
+                        placeholder="請輸入介於1~50之間的數字"
                         autoComplete="off"
-                        // onKeyPress={editHandler}
                         onChange={inputNumberHandler}
                         min="1"
                         max="50"
+                        disabled={ answer === 0 || success }
                     />
-                    <button type='submit'>GUESS</button>
-                    <p>{error}</p>
+                    <button type='submit' disabled={ answer === 0 || success }>猜數字</button>
+                    {error && <p>{error}</p>}
                 </form>
             </div>
         </>

@@ -1,14 +1,24 @@
+import { useState } from 'react'
 import { CrownOutlined } from '@ant-design/icons'
+import { useSelector } from 'react-redux'
 
-function ListField(props){
-    const { list, showList } = props
+function ListField(){
+    const [ showList, setShowList ] = useState(false)
+    
+    // get list from store
+    const list = useSelector(state => state.list)
 
     const block = { opacity: "1" }
     const hidden = { opacity: "0" }
 
+    const showListHandler = () => {
+        showList ? setShowList(false) : setShowList(true)
+    }
+
     return (
         <>
             <div className="section">
+                <button onClick={showListHandler}>查看排名</button>
                 <table style={showList ? block : hidden}>
                     <thead>
                         <tr>
@@ -18,13 +28,13 @@ function ListField(props){
                         </tr>
                     </thead>
                     <tbody>
-                    {list.sort((a,b)=>a.timer-b.timer)
+                    {list.sort((a,b)=>a.times-b.times)
                         .map((v,i) => {
                         return (
                             <tr key={v.name.toString()}>
                                 <td>{i===0 && <CrownOutlined/>} {i+1}</td>
                                 <td>{v.name}</td>
-                                <td>{v.timer}</td>
+                                <td>{v.times}</td>
                             </tr>
                         )
                     })}

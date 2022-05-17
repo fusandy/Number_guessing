@@ -1,43 +1,40 @@
 import { useState } from 'react'
-import { useDispatch } from 'react-redux'
-import { setName,
-    setNum, 
-    clearRecord, 
-    clearRange
-} from '../actions'
+import { useDispatch, useSelector } from 'react-redux'
+import { setNameAndAnswer } from '../actions'
 
 
 function NameField(props) {
-    const { inputName, setInputName, list } = props
+    const { inputName, setInputName } = props
     const [ error, setError ] = useState('')
     const dispatch = useDispatch()
 
-    // get name input value
+    // get the random answer from store
+    const answer = useSelector(state => state.answer) 
+
+    // get nameList from store
+    const nameList = useSelector(state => state.list.map(({name}) => name))
+
+    // get input value
     const inputNameHandler = (e) => {
         setError('')
         const inputName = e.target.value
-        const nameList = list.map(({name})=>name)
-        if(nameList.includes(inputName)){
-            setError('姓名重複，請重新輸入。')
-        } else {
-            setInputName(inputName)
-        }
+        setInputName(inputName)
     }
         
     // random a number and setAnswer
     const numberRunner = () => {
-        if (!inputName  || /^\s/.test(inputName)) {
+        if(!inputName  || /^\s/.test(inputName)) {
             setError('姓名不可空白。')
+            return
+        }
+        if(nameList.includes(inputName)){
+            setError('姓名重複，請重新輸入。')
             return
         }
             
         const random = Math.ceil(Math.random()*50)
-        dispatch(clearRecord())
-        dispatch(clearRange())
-        dispatch(setNum(random))
-        dispatch(setName(inputName))
+        dispatch(setNameAndAnswer(inputName, random))
     }
-
 
     return (
         <>
@@ -46,11 +43,13 @@ function NameField(props) {
                     name="user" 
                     id="user"
                     value={inputName}
-                    placeholder="Enter your name"
+                    autoComplete="off"
+                    placeholder="請輸入姓名或暱稱"
                     onChange={inputNameHandler}
+                    readOnly={ answer !== 0 }
                 />
-                <button onClick={numberRunner}>START</button>
-                <p>{error}</p>
+                <button onClick={numberRunner} disabled={ answer !== 0 }>遊戲開始</button>
+                {error && <p>{error}</p>}
             </div>
         </>
     )

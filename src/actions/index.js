@@ -1,63 +1,69 @@
-// evoked when press the start button
-export const setName = (name) => {
+// const init = {
+//     name: '',
+//     answer: 0,
+//     value: 0,
+//     max: 50,
+//     min: 1,
+//     times: 0,
+//     list:[]
+// }
+
+export const setNameAndAnswer = (name, number) => {
     return {
-        type: "setName",
-        payload: name
+        type: "set",
+        payload: {
+            name: name,
+            answer: number
+        }
     }
 }
 
-// start button
-export const setNum = (number) => {
+export const setValueAndTimes = (number, times) => {
     return {
-        type: "setInit/set",
-        payload: number
-    }
-}
-export const clearNum = () => {
-    return {
-        type: "setInit/clear"
+        type:"set",
+        payload: {
+            value: number,
+            times: times        
+        }
     }
 }
 
-// guess button
-export const setRecord = (number) => {
-    return {
-        type:"setRecord/guess",
-        payload: number
-    }
-}
-export const clearRecord = () =>{
-    return {
-        type: "setRecord/clear"
-    }
-}
-
-// change the max number
 export const changeMax = (number) => {
     return {
-        type:"change/max",
-        payload: number
+        type:"set",
+        payload: {
+            max: number
+        }
     }
 }
 
-// change the min number
 export const changeMin = (number) => {
     return {
-        type:"change/min",
-        payload: number
+        type:"set",
+        payload: {
+            min: number
+        }
     }
 }
 
-export const clearRange = () => {
+export const setList = (record) => {
     return {
-        type:"clear"
+        type: "addList",
+        payload: record
     }
 }
 
-// set the result into the list
-export const setList = (data) => {
+export const reset = () => {
     return {
-        type: "setList/add",
-        payload: data
+        type: "reset",
+        payload:{
+            name: '',
+            answer: 0,
+            value: 0,
+            max: 50,
+            min: 1,
+            times: 0
+        }
     }
 }
+
