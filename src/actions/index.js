@@ -55,15 +55,7 @@ export const setList = (record) => {
 
 export const reset = () => {
     return {
-        type: "reset",
-        payload:{
-            name: '',
-            answer: 0,
-            value: 0,
-            max: 50,
-            min: 1,
-            times: 0
-        }
+        type: "reset"
     }
 }
 

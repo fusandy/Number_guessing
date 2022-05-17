@@ -1,8 +1,9 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { CrownOutlined } from '@ant-design/icons'
 import { useSelector } from 'react-redux'
 
-function ListField(){
+const ListField = React.memo(() => {
+    console.log('ListField render ..')
     const [ showList, setShowList ] = useState(false)
     
     // get list from store
@@ -43,6 +44,6 @@ function ListField(){
             </div>
         </>
     )
-}
+})
 
 export default ListField

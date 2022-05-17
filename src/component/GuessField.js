@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { setValueAndTimes } from '../actions'
 
 function GuessField(props){
+    console.log('GuessField render ..')
     const { success, inputNumber, setInputNumber } = props
 
     const [ error, setError ] = useState('')
@@ -16,7 +17,7 @@ function GuessField(props){
     const min = useSelector(state => state.min)
 
     // get times from store
-    let times = useSelector(state => state.times)
+    const times = useSelector(state => state.times)
 
     // get number input value
     const inputNumberHandler = (e) => {
@@ -41,8 +42,7 @@ function GuessField(props){
         e.preventDefault()
         if(!inputNumber) return
         if( inputNumber > min && inputNumber < max ) {
-            times ++;
-            dispatch(setValueAndTimes(inputNumber, times))
+            dispatch(setValueAndTimes(inputNumber, times + 1))
         }else{
             setError(`請輸入${min}~${max}範圍的數字`)
         }

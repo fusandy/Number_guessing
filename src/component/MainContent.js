@@ -6,6 +6,7 @@ import ResultField from './ResultField';
 import ListField from './ListField'
 
 function Main(){
+    console.log('Main render ..')
     const [ inputName, setInputName ] = useState('')
     const [ inputNumber, setInputNumber ] = useState('')
     const [ success, setSuccess ] = useState(false)
@@ -13,9 +14,9 @@ function Main(){
     return (
         <>
             <h1>Number Guessing Game</h1>
-            <NameField inputName={inputName} setInputName={setInputName}/>
-            <GuessField success={success} inputNumber={inputNumber} setInputNumber={setInputNumber}/>
-            <ResultField setSuccess={setSuccess} setInputName={setInputName} setInputNumber={setInputNumber}/>    
+            <NameField inputName={inputName} setInputName={setInputName} />
+            <GuessField success={success} inputNumber={inputNumber} setInputNumber={setInputNumber} />
+            <ResultField setSuccess={setSuccess} setInputName={setInputName} setInputNumber={setInputNumber} />    
             <ListField />
         </>
     )
@@ -24,11 +25,5 @@ function Main(){
 export default Main
 
 
-// inputName inputNumber showList 調整到獨立component裡面  
-// 向store取資料回歸到各元件  -- ok
-// combineReducers物件不要用動詞  -- ok
-// 將名字重複判與否移到numberRunner裡面  -- ok
-// replayHandler 清空  -- ok
-// reducer簡化為一個，action.type只有三個 set, reset, addRanks  -- ok
-// UI design調整名字input與start btn，在遊戲結束前都要disabled  -- ok
-// 答對的時候，全部的input都變成disabled  -- ok
+// 結構改變 ： NameField, GuessField 合併成一支component，並將再玩一次的按鈕移到該支元件中
+// 測試每支元件的 render 次數，沒實際影響的 render 要避免

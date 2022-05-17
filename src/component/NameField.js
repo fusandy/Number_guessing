@@ -4,6 +4,7 @@ import { setNameAndAnswer } from '../actions'
 
 
 function NameField(props) {
+    console.log('NameField render ..')
     const { inputName, setInputName } = props
     const [ error, setError ] = useState('')
     const dispatch = useDispatch()

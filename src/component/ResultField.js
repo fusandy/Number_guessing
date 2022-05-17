@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { changeMax, changeMin, setList, reset} from '../actions'
 
 function ResultField(props){
+    console.log('GuessField render ..')
     const { setSuccess, setInputName, setInputNumber } = props
     const [ result, setResult ] = useState('')
     const dispatch = useDispatch()

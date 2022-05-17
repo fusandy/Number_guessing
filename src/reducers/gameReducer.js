@@ -17,8 +17,8 @@ export default function gameReducer(state=init, action){
             }
         case 'reset':
             return {
-                ...state,
-                ...action.payload
+                ...init,
+                list: state.list
             }
         case 'addList':
             return {
