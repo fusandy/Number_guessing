@@ -24,14 +24,14 @@ function NameField(props) {
     // random a number and setAnswer
     const numberRunner = () => {
         if(!inputName  || /^\s/.test(inputName)) {
-            setError('姓名不可空白。')
+            setError('名稱不可空白。')
             return
         }
         if(nameList.includes(inputName)){
-            setError('姓名重複，請重新輸入。')
+            setError('名稱重複，請重新輸入。')
             return
         }
-            
+    
         const random = Math.ceil(Math.random()*50)
         dispatch(setNameAndAnswer(inputName, random))
     }
