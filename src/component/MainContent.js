@@ -1,22 +1,21 @@
 import { useState } from 'react'
-import { useSelector } from 'react-redux'
-import NameField from './NameField';
-import GuessField from './GuessField'
+import InputField from './InputField';
+// import GuessField from './GuessField'
 import ResultField from './ResultField';
 import ListField from './ListField'
 
 function Main(){
     console.log('Main render ..')
-    const [ inputName, setInputName ] = useState('')
-    const [ inputNumber, setInputNumber ] = useState('')
-    const [ success, setSuccess ] = useState(false)
+    // const [ inputName, setInputName ] = useState('')
+    // const [ inputNumber, setInputNumber ] = useState('')
+    // const [ success, setSuccess ] = useState(false)
     
     return (
         <>
             <h1>Number Guessing Game</h1>
-            <NameField inputName={inputName} setInputName={setInputName} />
-            <GuessField success={success} inputNumber={inputNumber} setInputNumber={setInputNumber} />
-            <ResultField setSuccess={setSuccess} setInputName={setInputName} setInputNumber={setInputNumber} />    
+            <InputField  />
+            {/* <GuessField success={success} inputNumber={inputNumber} setInputNumber={setInputNumber} /> */}
+            <ResultField />    
             <ListField />
         </>
     )

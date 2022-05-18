@@ -46,10 +46,26 @@ export const changeMin = (number) => {
     }
 }
 
-export const setList = (record) => {
+export const setSuccess = () => {
     return {
-        type: "addList",
-        payload: record
+        type:"set",
+        payload:{
+            success: true
+        }
+    }
+}
+
+// export const setList = (record) => (dispatch, getState) => {
+//     const { name , times } = getState()
+//     return {
+//         type: "addList",
+//         payload: { name , times }
+//     }
+// }
+
+export const setList_ = () => {
+    return {
+        type: "addList_"
     }
 }
 

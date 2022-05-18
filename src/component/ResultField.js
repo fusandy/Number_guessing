@@ -1,15 +1,14 @@
 import { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { changeMax, changeMin, setList, reset} from '../actions'
+import { changeMax, changeMin, setSuccess, setList_ } from '../actions'
 
 function ResultField(props){
-    console.log('GuessField render ..')
-    const { setSuccess, setInputName, setInputNumber } = props
+    console.log('ResultField render ..')
     const [ result, setResult ] = useState('')
     const dispatch = useDispatch()
 
-    // get the name from store
-    const name = useSelector(state => state.name)
+    // // get the name from store
+    // const name = useSelector(state => state.name)
 
     // get the random answer from store
     const answer = useSelector(state => state.answer) 
@@ -35,8 +34,8 @@ function ResultField(props){
             return ''
         }
         if (value === answer) {
-            setSuccess(true)
-            dispatch(setList({ name:name, times:times }))
+            dispatch(setSuccess(true))
+            dispatch(setList_())
             return '恭喜 答對了！'
         } 
         // wrong answer + range hint for the result
@@ -50,21 +49,11 @@ function ResultField(props){
         }
     }
 
-    const replayHandler = () => {
-        setInputName('')
-        setInputNumber('')
-        setSuccess(false)
-        dispatch(reset())
-    }
-
     return(
         <>
             <div className="section">
                 <p>累積次數: {times} 次 </p>
                 <p>結果: {result} </p>
-            </div>
-            <div className="section">
-                <button onClick={replayHandler}>再玩一次</button>
             </div>
         </>
     )

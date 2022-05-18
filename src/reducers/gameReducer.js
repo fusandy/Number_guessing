@@ -5,6 +5,7 @@ const init = {
     max: 50,
     min: 1,
     times: 0,
+    success: false,
     list: []
 }
 
@@ -20,12 +21,20 @@ export default function gameReducer(state=init, action){
                 ...init,
                 list: state.list
             }
-        case 'addList':
+        // case 'addList':
+        //     return {
+        //         ...state,
+        //         list: [
+        //             ...state.list,
+        //             action.payload
+        //         ]
+        //     }
+        case 'addList_':
             return {
                 ...state,
                 list: [
                     ...state.list,
-                    action.payload
+                    { name: state.name, times: state.times }
                 ]
             }
         default:
