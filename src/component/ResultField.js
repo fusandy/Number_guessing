@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { changeMax, changeMin, setSuccess, setList_ } from '../actions'
+import { changeMax, changeMin, setSuccess, setList } from '../actions'
 
 function ResultField(props){
     console.log('ResultField render ..')
@@ -35,7 +35,7 @@ function ResultField(props){
         }
         if (value === answer) {
             dispatch(setSuccess(true))
-            dispatch(setList_())
+            dispatch(setList())
             return '恭喜 答對了！'
         } 
         // wrong answer + range hint for the result

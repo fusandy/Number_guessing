@@ -21,22 +21,22 @@ export default function gameReducer(state=init, action){
                 ...init,
                 list: state.list
             }
-        // case 'addList':
-        //     return {
-        //         ...state,
-        //         list: [
-        //             ...state.list,
-        //             action.payload
-        //         ]
-        //     }
-        case 'addList_':
+        case 'addList':
             return {
                 ...state,
                 list: [
                     ...state.list,
-                    { name: state.name, times: state.times }
+                    action.payload
                 ]
             }
+        // case 'addList_':
+        //     return {
+        //         ...state,
+        //         list: [
+        //             ...state.list,
+        //             { name: state.name, times: state.times }
+        //         ]
+        //     }
         default:
             return state
     }

@@ -23,6 +23,3 @@ function Main(){
 
 export default Main
 
-
-// 結構改變 ： NameField, GuessField 合併成一支component，並將再玩一次的按鈕移到該支元件中
-// 測試每支元件的 render 次數，沒實際影響的 render 要避免

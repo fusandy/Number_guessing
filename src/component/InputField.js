@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { setNameAndAnswer, setValueAndTimes, setSuccess, reset } from '../actions'
 
 
-function InputField(props) {
+function InputField() {
     console.log('InputField render ..')
 
     const [ inputName, setInputName ] = useState('')
@@ -73,7 +73,7 @@ function InputField(props) {
     // invalid message
     const invalidHandler = (e) => {
         e.preventDefault();
-        if(inputNumber < 1){
+        if(inputNumber <= 0){
             setNumberError('輸入的數字不可小於1')
         }
         if(inputNumber > 50){

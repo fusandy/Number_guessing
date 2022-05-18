@@ -55,19 +55,21 @@ export const setSuccess = () => {
     }
 }
 
-// export const setList = (record) => (dispatch, getState) => {
-//     const { name , times } = getState()
+export const setList = () => {
+    return (dispatch, getState) => {
+        const { name , times } = getState()
+        dispatch({
+            type: "addList",
+            payload: { name , times }
+        })
+    }   
+}
+
+// export const setList_ = () => {
 //     return {
-//         type: "addList",
-//         payload: { name , times }
+//         type: "addList_"
 //     }
 // }
-
-export const setList_ = () => {
-    return {
-        type: "addList_"
-    }
-}
 
 export const reset = () => {
     return {

@@ -1,5 +1,6 @@
-import { legacy_createStore as createStore } from 'redux';
-import { combineReducers } from 'redux';
+import { legacy_createStore as createStore, applyMiddleware, compose } from 'redux';
+import thunk from 'redux-thunk';
+// import { combineReducers } from 'redux';
 // import setNameReducer from '../reducers/setName';
 // import setInitReducer from '../reducers/setInit';
 // import setGuessReducer  from '../reducers/setRecord'
@@ -15,7 +16,10 @@ import gameReducer from '../reducers/gameReducer'
 //   list: setListReducer
 // })
 
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({}) : compose;
+const enhancer = composeEnhancers(applyMiddleware(thunk));
+
 export const store = createStore(
   gameReducer,
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-  );
+  enhancer
+);
